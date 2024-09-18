@@ -1,0 +1,26 @@
+{
+  "env": {
+    "node": true,
+    "es2021": true,
+    "jest": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended" // Add Prettier recommended config
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "plugins": [
+    "@typescript-eslint",
+    "prettier" // Add Prettier plugin
+  ],
+  "rules": {
+    "prettier/prettier": "error", // Enforce Prettier rules as ESLint errors
+    "@typescript-eslint/no-explicit-any": "off"
+  },
+  "ignorePatterns": ["dist/"]
+}
