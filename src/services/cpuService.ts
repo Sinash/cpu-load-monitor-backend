@@ -17,6 +17,12 @@ const loadHistory: LoadData[] = [];
 const highLoadAlerts: Alert[] = [];
 const recoveryAlerts: Alert[] = [];
 
+let highLoadCount = 0; // Number of times CPU went into high load
+let recoveryCount = 0; // Number of times CPU recovered from high load
+
+let highLoadStartTime: number | null = null; // Timestamp when high load started
+let recoveryStartTime: number | null = null; // Timestamp when recovery started
+
 /**
  * Function to get the current CPU load data and handle alerting logic.
  *
@@ -41,11 +47,11 @@ const getCPULoadData = async () => {
   // Check if the current load falls below the recovery threshold
   const isRecovery = loadAverage < config.RECOVERY_THRESHOLD;
 
-  // Handle high load or recovery alert scenarios
+  // Handle high load or recovery alert scenarios with a 2-minute delay for each
   if (isHighLoad) {
-    handleHighLoadAlert(timestamp);
+    handleHighLoad(timestamp);
   } else if (isRecovery) {
-    handleRecoveryAlert(timestamp);
+    handleRecovery(timestamp);
   }
 
   // Return CPU load data and alert statuses
@@ -53,50 +59,68 @@ const getCPULoadData = async () => {
 };
 
 /**
- * Function to handle high load alert.
+ * Function to handle high load alert with a 2-minute threshold.
  *
- * If no active high load alert exists, it starts a new one.
- * If a recovery alert is active, it closes it.
- *
- * @param {string} timestamp - The timestamp when the high load alert started.
+ * @param {string} timestamp - The timestamp when high load was detected.
  */
-const handleHighLoadAlert = (timestamp: string) => {
-  if (
-    !highLoadAlerts.length ||
-    highLoadAlerts[highLoadAlerts.length - 1].endTime
-  ) {
-    highLoadAlerts.push({ startTime: timestamp });
-  } else {
+const handleHighLoad = (timestamp: string) => {
+  const currentTime = new Date(timestamp).getTime();
+
+  if (!highLoadStartTime) {
+    highLoadStartTime = currentTime;
+  }
+
+  // Check if high load has persisted for more than 2 minutes
+  if (currentTime - highLoadStartTime >= 2 * 60 * 1000) {
     if (
-      recoveryAlerts.length &&
-      !recoveryAlerts[recoveryAlerts.length - 1].endTime
+      !highLoadAlerts.length ||
+      highLoadAlerts[highLoadAlerts.length - 1].endTime
     ) {
-      recoveryAlerts[recoveryAlerts.length - 1].endTime = timestamp;
+      highLoadAlerts.push({ startTime: timestamp });
+      highLoadCount++; // Increment the high load count
+      recoveryStartTime = null; // Reset recovery timer if it was running
     }
+  }
+
+  // If high load is detected, ensure the previous recovery alert ends
+  if (
+    recoveryAlerts.length &&
+    !recoveryAlerts[recoveryAlerts.length - 1].endTime
+  ) {
+    recoveryAlerts[recoveryAlerts.length - 1].endTime = timestamp;
   }
 };
 
 /**
- * Function to handle recovery alert.
+ * Function to handle recovery alert with a 2-minute threshold.
  *
- * If no active recovery alert exists, it starts a new one.
- * If a high load alert is active, it closes it.
- *
- * @param {string} timestamp - The timestamp when the recovery alert started.
+ * @param {string} timestamp - The timestamp when recovery was detected.
  */
-const handleRecoveryAlert = (timestamp: string) => {
-  if (
-    !recoveryAlerts.length ||
-    recoveryAlerts[recoveryAlerts.length - 1].endTime
-  ) {
-    recoveryAlerts.push({ startTime: timestamp });
-  } else {
+const handleRecovery = (timestamp: string) => {
+  const currentTime = new Date(timestamp).getTime();
+
+  if (!recoveryStartTime) {
+    recoveryStartTime = currentTime;
+  }
+
+  // Check if recovery has persisted for more than 2 minutes
+  if (currentTime - recoveryStartTime >= 2 * 60 * 1000) {
     if (
-      highLoadAlerts.length &&
-      !highLoadAlerts[highLoadAlerts.length - 1].endTime
+      !recoveryAlerts.length ||
+      recoveryAlerts[recoveryAlerts.length - 1].endTime
     ) {
-      highLoadAlerts[highLoadAlerts.length - 1].endTime = timestamp;
+      recoveryAlerts.push({ startTime: timestamp });
+      recoveryCount++; // Increment the recovery count
+      highLoadStartTime = null; // Reset high load timer if it was running
     }
+  }
+
+  // If recovery is detected, ensure the previous high load alert ends
+  if (
+    highLoadAlerts.length &&
+    !highLoadAlerts[highLoadAlerts.length - 1].endTime
+  ) {
+    highLoadAlerts[highLoadAlerts.length - 1].endTime = timestamp;
   }
 };
 
@@ -112,11 +136,14 @@ const getLoadHistory = () => {
 /**
  * Function to retrieve the current alerts (high load and recovery).
  *
- * @returns {{ highLoadAlerts: Alert[], recoveryAlerts: Alert[] }} An object containing both high load and recovery alerts.
+ * @returns {{ highLoadAlerts: Alert[], recoveryAlerts: Alert[], highLoadCount: number, recoveryCount: number }}
+ *          An object containing both high load and recovery alerts along with their counts.
  */
 const getAlerts = () => ({
   highLoadAlerts,
   recoveryAlerts,
+  highLoadCount,
+  recoveryCount,
 });
 
 /**
