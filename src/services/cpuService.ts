@@ -137,12 +137,11 @@ const handleRecovery = (timestamp: string) => {
       recoveryAlerts[recoveryAlerts.length - 1].endTime
     ) {
       // Ensure the recovery starts right after the high load ends
-      const lastHighLoadAlert = highLoadAlerts[highLoadAlerts.length - 1];
-      const recoveryStart = lastHighLoadAlert?.endTime || timestamp;
+      const twoMinBeforeRecovery = new Date(currentTime - 2 * 60 * 1000);
 
       // Set recovery start time to match the end of the last high load alert
       recoveryAlerts.push({
-        startTime: recoveryStart || timestamp, // Fallback to timestamp if undefined
+        startTime: new Date(twoMinBeforeRecovery).toISOString(), // Fallback to timestamp if undefined
         endTime: new Date(currentTime).toISOString(), // Set recovery end time 2 minutes after it starts
       });
 
@@ -151,7 +150,9 @@ const handleRecovery = (timestamp: string) => {
         !highLoadAlerts[highLoadAlerts.length - 1].endTime
       ) {
         // Set highLoadAlerts endTime when the load goes below the threshold
-        highLoadAlerts[highLoadAlerts.length - 1].endTime = timestamp;
+        highLoadAlerts[highLoadAlerts.length - 1].endTime = new Date(
+          twoMinBeforeRecovery
+        ).toISOString();
       }
 
       recoveryCount++; // Increment the recovery count
