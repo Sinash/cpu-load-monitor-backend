@@ -87,6 +87,14 @@ const handlePotentialHighLoad = (timestamp: string) => {
 
   if (!highLoadStartTime) {
     highLoadStartTime = currentTime; // Set the start time when the load first goes above the threshold
+    return;
+  }
+
+  if (
+    highLoadAlerts.length &&
+    !highLoadAlerts[highLoadAlerts.length - 1].endTime
+  ) {
+    return;
   }
 
   // Check if high load has persisted for more than 2 minutes
@@ -98,6 +106,7 @@ const handlePotentialHighLoad = (timestamp: string) => {
     });
     highLoadCount++; // Increment the high load count
     recoveryStartTime = null; // Reset recovery timer if it was running
+    inRecovery = false;
   }
 };
 
@@ -111,6 +120,14 @@ const handleRecovery = (timestamp: string) => {
 
   if (!recoveryStartTime) {
     recoveryStartTime = currentTime;
+    return;
+  }
+
+  if (
+    recoveryAlerts.length &&
+    !recoveryAlerts[recoveryAlerts.length - 1].endTime
+  ) {
+    return;
   }
 
   // Check if recovery has persisted for more than 2 minutes
@@ -128,31 +145,20 @@ const handleRecovery = (timestamp: string) => {
         startTime: recoveryStart || timestamp, // Fallback to timestamp if undefined
         endTime: new Date(currentTime).toISOString(), // Set recovery end time 2 minutes after it starts
       });
+
+      if (
+        highLoadAlerts.length &&
+        !highLoadAlerts[highLoadAlerts.length - 1].endTime
+      ) {
+        // Set highLoadAlerts endTime when the load goes below the threshold
+        highLoadAlerts[highLoadAlerts.length - 1].endTime = timestamp;
+      }
+
       recoveryCount++; // Increment the recovery count
       highLoadStartTime = null; // Reset high load timer if it was running
       inRecovery = true; // Set recovery flag to true to avoid multiple recovery alerts
       inHighLoad = false; // Reset the high load flag when recovery is completed
     }
-  }
-
-  // If recovery is detected, ensure the previous high load alert ends
-  if (
-    highLoadAlerts.length &&
-    !highLoadAlerts[highLoadAlerts.length - 1].endTime
-  ) {
-    // Set highLoadAlerts endTime when the load goes below the threshold
-    highLoadAlerts[highLoadAlerts.length - 1].endTime = timestamp;
-
-    // Immediately trigger recovery with the same timestamp
-    const recoveryStart =
-      highLoadAlerts[highLoadAlerts.length - 1].endTime || timestamp; // Fallback to timestamp if undefined
-    recoveryAlerts.push({
-      startTime: recoveryStart,
-      endTime: new Date(currentTime + 2 * 60 * 1000).toISOString(), // Set recovery end time 2 minutes after it starts
-    });
-    recoveryCount++;
-    inRecovery = true; // Mark as recovered
-    inHighLoad = false; // Reset the high load flag after recovery
   }
 };
 
