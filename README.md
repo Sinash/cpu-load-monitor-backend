@@ -105,3 +105,48 @@ Example Authorization header: `Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=`
     "recoveryCount": 2
   }
   ```
+
+## Installation
+
+## Prerequisites
+
+Before installing and running the CPU Load Monitor Backend Service, ensure you have the following installed on your system:
+
+- **Node.js**: v14.x or higher
+- **npm**: Comes with Node.js. Ensure it’s updated by running `npm install -g npm`.
+
+To check if Node.js is installed and verify the version, run the following command in your terminal:
+
+```bash
+node -v
+```
+
+## To set up the CPU Load Monitor - Backend Service, follow these steps:
+
+### 1. Clone the Repository
+
+First, clone the repository to your local machine:
+
+```bash
+git clone git@github.com:Sinash/cpu-load-monitor-backend.git
+cd cpu-load-monitor-backend
+```
+
+### 2. Install Dependencies
+
+Install the required dependencies using npm:
+
+```bash
+npm install
+```
+
+### 3. Set Up Environment Variables
+
+This project uses dotenv to manage environment variables. Create a .env file in the root of your project directory. Below is an example of the `.env` file structure. You can also rename the `.env.sample` to `.env` thats in the repo
+
+```bash
+# .env
+PORT=3001
+USERNAME="cpu-user"
+PASSWORD="cpu-password"
+```
