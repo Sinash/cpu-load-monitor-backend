@@ -200,3 +200,6 @@ npm run format
 ```
 
 Prettier will automatically format your code before committing to ensure all files are consistently styled.
+
+![Screenshot 2024-09-23 at 4 52 32 PM](https://github.com/user-attachments/assets/3e9a7403-e2b9-4d0a-8b35-2f8b4209156e)
+
