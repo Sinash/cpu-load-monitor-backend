@@ -114,11 +114,28 @@ Before installing and running the CPU Load Monitor Backend Service, ensure you h
 
 - **Node.js**: v14.x or higher
 - **npm**: Comes with Node.js. Ensure it’s updated by running `npm install -g npm`.
+- **nvm**: (Node Version Manager) to manage the correct version of Node.js as specified in the project.
 
 To check if Node.js is installed and verify the version, run the following command in your terminal:
 
 ```bash
 node -v
+```
+
+nvm (Node Version Manager)
+This project uses nvm to manage Node.js versions. Make sure that nvm is installed on your system before proceeding.
+
+To Install nvm:
+
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+```
+
+If nvm is installed, install and use the Node.js version specified in the .nvmrc file:
+
+```bash
+nvm install # Installs the Node.js version specified in .nvmrc
+nvm use # Switches to the required Node.js version
 ```
 
 ## To set up the CPU Load Monitor - Backend Service, follow these steps:
@@ -201,5 +218,29 @@ npm run format
 
 Prettier will automatically format your code before committing to ensure all files are consistently styled.
 
-![Screenshot 2024-09-23 at 4 52 32 PM](https://github.com/user-attachments/assets/3e9a7403-e2b9-4d0a-8b35-2f8b4209156e)
+### 3. Testing
 
+The project uses Jest for running unit tests. All features should be properly tested with unit tests, and tests must pass before committing changes.
+
+To run all tests:
+
+```bash
+npm test
+```
+
+This command will also generate a report showing how much of your code is covered by tests. You can view the report in the coverage folder.
+
+### 4. Commit Message Standards
+
+Follow these conventions when writing commit messages to ensure consistency and readability:
+
+Use the present tense: "Add feature" not "Added feature."
+Limit the first line to 72 characters or less.
+Reference issues and pull requests in the commit message, if applicable.
+Provide a detailed explanation in the body if needed, especially if the commit introduces significant changes or fixes a bug.
+
+```bash
+git commit -m "feat: add API endpoint for fetching current CPU load"
+```
+
+![Screenshot 2024-09-23 at 4 52 32 PM](https://github.com/user-attachments/assets/3e9a7403-e2b9-4d0a-8b35-2f8b4209156e)
