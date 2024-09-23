@@ -3,6 +3,7 @@ import express from 'express';
 // Importing the global error handler middleware
 import { errorHandler } from './middleware/errorMiddleware';
 // Importing the routes for CPU load alerts, history, and current load
+import basicAuth from './middleware/authorization';
 import cpuLoadAlertsRoute from './routes/cpuLoadAlertsRoute';
 import cpuLoadHistoryRoute from './routes/cpuLoadHistoryRoute';
 import cpuLoadRoute from './routes/cpuLoadRoute';
@@ -13,10 +14,13 @@ const app = express();
 // Middleware to parse incoming JSON requests
 app.use(express.json());
 
+// Apply Basic Auth to all /api routes
+app.use('/api', basicAuth);
+
 // Register routes for handling API requests related to CPU load, history, and alerts
-app.use('/api', cpuLoadRoute); // Route for current CPU load
-app.use('/api', cpuLoadHistoryRoute); // Route for CPU load history
-app.use('/api', cpuLoadAlertsRoute); // Route for CPU load alerts
+app.use('/api/v1', cpuLoadRoute); // Route for current CPU load
+app.use('/api/v1', cpuLoadHistoryRoute); // Route for CPU load history
+app.use('/api/v1', cpuLoadAlertsRoute); // Route for CPU load alerts
 
 // Catch-all route for undefined routes, returning a 404 error
 app.use('*', (req, res) => {
