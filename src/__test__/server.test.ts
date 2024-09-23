@@ -1,6 +1,7 @@
 import { Server } from 'http'; // Import Server to return in the mock
 import app from '../app'; // Import the Express app instance
 import { config } from '../config'; // Import the configuration settings
+import { startServer } from '../server'; // Import the startServer function
 import { logger } from '../utils/logger'; // Import the logger utility
 
 // Mock the logger utility to avoid real console output
@@ -8,6 +9,7 @@ jest.mock('../utils/logger');
 
 describe('Server Initialization', () => {
   let listenMock: jest.SpyInstance;
+  let server: Server;
 
   beforeEach(() => {
     // Mock the app.listen method to return a mock Server object instead of Express app
@@ -20,13 +22,16 @@ describe('Server Initialization', () => {
   });
 
   afterEach(() => {
-    // Restore the original behavior of the mocked functions
+    // Close the server if it's running and restore the original behavior of the mocked functions
+    if (server && server.close) {
+      server.close();
+    }
     listenMock.mockRestore();
   });
 
   it('should start the server on the configured port', () => {
-    // Call the part of the code that starts the server
-    require('../server'); // This simulates running the server entry point
+    // Call the startServer function to start the server
+    server = startServer();
 
     // Expect the app.listen function to have been called with the configured port
     expect(listenMock).toHaveBeenCalledWith(config.PORT, expect.any(Function));

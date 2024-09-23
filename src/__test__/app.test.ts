@@ -54,19 +54,4 @@ describe('Express Application', () => {
       'Route not found. Please check the URL.'
     );
   });
-
-  it('should handle errors using the global error handler', async () => {
-    // Mock a route that triggers an error (create a dummy route in your app to trigger an error)
-    app.get('/api/v1/error-route', (req, res) => {
-      throw new Error('Test error');
-    });
-
-    // Provide valid Basic Auth credentials to bypass the auth check
-    const response = await request(app)
-      .get('/api/v1/error-route')
-      .set(
-        'Authorization',
-        'Basic ' + Buffer.from('testuser:testpassword').toString('base64')
-      );
-  });
 });
