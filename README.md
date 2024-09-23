@@ -70,17 +70,38 @@ Example Authorization header: `Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=`
   ]
   ```
 
-  ### 3. Get CPU Load Alerts
+### 3. Get CPU Load Alerts
 
 - **Endpoint**: `GET api/v1/cpu-load-alerts`
-- **Description**: Fetch CPU load alerts. It keeps track of all the occurence of high load alerts and recovery alerts.
+- **Description**: Fetch CPU load alerts. It keeps track of all the occurence of high load alerts and recovery alerts. It includes start and end datetime for each alert and also the number of total alerts on each category.
 - **Authentication**: Requires Basic Authentication.
 - **Response**:
   ```json
   {
-    "highLoadAlerts": [],
-    "recoveryAlerts": [],
-    "highLoadCount": 0,
-    "recoveryCount": 0
+    "highLoadAlerts": [
+      {
+        "startTime": "2024-09-23T20:15:20.400Z",
+        "endTime": "2024-09-23T20:17:20.400Z"
+      },
+      {
+        "startTime": "2024-09-23T21:22:20.400Z",
+        "endTime": "2024-09-23T21:30:20.400Z"
+      },
+      {
+        "startTime": "2024-09-23T22:01:00.400Z"
+      }
+    ],
+    "recoveryAlerts": [
+      {
+        "startTime": "2024-09-23T20:17:20.400Z",
+        "endTime": "2024-09-23T20:19:20.400Z"
+      },
+      {
+        "startTime": "2024-09-23T21:30:20.400Z",
+        "endTime": "2024-09-23T21:32:20.400Z"
+      }
+    ],
+    "highLoadCount": 3,
+    "recoveryCount": 2
   }
   ```
