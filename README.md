@@ -106,6 +106,8 @@ Example Authorization header: `Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=`
   }
   ```
 
+<hr>
+
 ## Installation
 
 ## Prerequisites
@@ -185,8 +187,6 @@ npm start
 ```
 
 The service will start running and be accessible based on the port number set in your .env file (e.g., http://localhost:3001).
-
-<hr>
 
 ## Development
 
