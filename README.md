@@ -1,81 +1,75 @@
-# CPU Load Monitor - Backend Service
+# 🚀 CPU Load Monitor - Backend Service
 
-## Overview
+![Node.js](https://img.shields.io/badge/Node.js-v14%2B-green?style=flat&logo=node.js)
+![TypeScript](https://img.shields.io/badge/TypeScript-4.0%2B-blue?style=flat&logo=typescript)
+![Express](https://img.shields.io/badge/Express-4.x-lightgrey?style=flat&logo=express)
+![Jest](https://img.shields.io/badge/Jest-27.0%2B-red?style=flat&logo=jest)
 
-The CPU Load Monitor Backend Service is a Node.js application that provides a RESTful API for monitoring CPU load and managing alerts. It collects data on CPU load averages and allows users to access current load, historical data, and alerts related to high CPU usage and recovery.
+## 📝 Overview
 
-## Features
+The **CPU Load Monitor Backend Service** is a RESTful API built with Node.js that monitors CPU load, tracks historical data, and manages alerts for high load conditions. It provides endpoints to access current CPU load, historical load data, and alert management, making it ideal for monitoring system performance.
 
-- Fetch current CPU load data
-- Retrieve historical CPU load data
-- Manage high load alerts and recovery alerts
-- RESTful API endpoints for integration with frontend applications
+---
 
-## Technologies Used
+## ✨ Features
 
-- **Node.js**: JavaScript runtime for server-side development
-- **Express**: Web framework for building RESTful APIs
-- **TypeScript**: Typed superset of JavaScript for better development experience
-- **Jest**: Testing framework for unit and integration tests
-- **ESLint**: Linter for identifying and fixing problems in Typescript code
-- **Prettier**: Code formatter for consistent styling
-- **Nodemon**: Automatically restart the server during development
-- **Husky**: Git hooks for ensuring code quality and best practices before commits
-- **Dotenv**: Environment variable management
+- 📊 **Fetch Current CPU Load**: Get the real-time CPU load average.
+- 📈 **Retrieve Historical Data**: View CPU load history for the last 10 minutes.
+- 🔔 **High Load & Recovery Alerts**: Track CPU load alerts and their recovery.
+- 🌐 **RESTful API**: Easy integration with frontend applications.
 
-## API Endpoints
+---
 
-### Authentication
+## 🛠️ Technologies Used
 
-All endpoints require Basic Authentication. You need to send an `Authorization` header with the credentials in the format `Basic base64(username:password)`.
+- **Node.js**: JavaScript runtime for server-side development.
+- **Express**: Web framework to build RESTful APIs.
+- **TypeScript**: Typed superset of JavaScript for enhanced development experience.
+- **Jest**: Testing framework for unit and integration tests.
+- **ESLint**: Linter to maintain consistent and error-free code.
+- **Prettier**: Code formatter to enforce a consistent style.
+- **Nodemon**: Tool to automatically restart the server during development.
+- **Husky**: Git hooks to enforce code quality before commits.
+- **Dotenv**: Manages environment variables efficiently.
 
-Example Authorization header: `Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=`
+---
 
-### 1. Get Current CPU Load
+## 📡 API Endpoints
+
+### 1️⃣ **Get Current CPU Load**
 
 - **Endpoint**: `GET /api/v1/cpu-load`
-- **Description**: Fetches the current CPU load average data along with timestamp and isHighLoad & isRecovery flags.
-- **Authentication**: Requires Basic Authentication.
+- **Description**: Fetches the current CPU load average along with flags indicating high load and recovery status.
 - **Response**:
+
   ```json
   {
-    "loadAverage": 0.2484130859375,
+    "loadAverage": 0.248,
     "isHighLoad": false,
     "isRecovery": false,
     "timestamp": "2024-09-23T20:00:50.885Z"
   }
   ```
 
-### 2. Get Historical CPU Load
+### 2️⃣ **Get Historical CPU Load**
 
-- **Endpoint**: `GET api/v1/cpu-load-history`
-- **Description**: Retrieves historical CPU load data. Use in-memory to store the 10 mins data and old entries get cleared as new entries gets added.
-- **Authentication**: Requires Basic Authentication.
+- **Endpoint**: `GET /api/v1/cpu-load-history`
+- **Description**: Retrieves CPU load history stored for the last 10 minutes.
 - **Response**:
 
   ```json
   [
-    {
-      "loadAverage": 0.2484130859375,
-      "timestamp": "2024-09-23T20:00:50.885Z"
-    },
-    {
-      "loadAverage": 0.201171875,
-      "timestamp": "2024-09-23T20:05:50.438Z"
-    },
-    {
-      "loadAverage": 0.195068359375,
-      "timestamp": "2024-09-23T20:05:52.666Z"
-    }
+    { "loadAverage": 0.248, "timestamp": "2024-09-23T20:00:50.885Z" },
+    { "loadAverage": 0.201, "timestamp": "2024-09-23T20:05:50.438Z" }
   ]
   ```
 
-### 3. Get CPU Load Alerts
+### 3️⃣ **Get CPU Load Alerts**
 
-- **Endpoint**: `GET api/v1/cpu-load-alerts`
-- **Description**: Fetch CPU load alerts. It keeps track of all the occurence of high load alerts and recovery alerts. It includes start and end datetime for each alert and also the number of total alerts on each category.
-- **Authentication**: Requires Basic Authentication.
+- **Endpoint**: `GET /api/v1/cpu-load-alerts`
+- **Description**: Fetches all CPU load alerts and recovery events. Includes the number of high load and recovery events.
 - **Response**:
+
   ```json
   {
     "highLoadAlerts": [
@@ -86,19 +80,12 @@ Example Authorization header: `Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=`
       {
         "startTime": "2024-09-23T21:22:20.400Z",
         "endTime": "2024-09-23T21:30:20.400Z"
-      },
-      {
-        "startTime": "2024-09-23T22:01:00.400Z"
       }
     ],
     "recoveryAlerts": [
       {
         "startTime": "2024-09-23T20:17:20.400Z",
         "endTime": "2024-09-23T20:19:20.400Z"
-      },
-      {
-        "startTime": "2024-09-23T21:30:20.400Z",
-        "endTime": "2024-09-23T21:32:20.400Z"
       }
     ],
     "highLoadCount": 3,
@@ -106,141 +93,116 @@ Example Authorization header: `Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=`
   }
   ```
 
-<hr>
+---
 
-## Installation
+## 📦 Installation
 
-## Prerequisites
+### ✅ Prerequisites
 
-Before installing and running the CPU Load Monitor Backend Service, ensure you have the following installed on your system:
+Ensure you have the following installed:
 
-- **Node.js**: v14.x or higher
-- **npm**: Comes with Node.js. Ensure it’s updated by running `npm install -g npm`.
-- **nvm**: (Node Version Manager) to manage the correct version of Node.js as specified in the project.
+- **Node.js**: Version 14.x or higher
+- **npm**: Installed with Node.js (ensure it's updated using `npm install -g npm`)
+- **nvm**: Recommended to manage Node.js versions
 
-To check if Node.js is installed and verify the version, run the following command in your terminal:
+To verify Node.js is installed:
 
 ```bash
 node -v
 ```
 
-nvm (Node Version Manager)
-This project uses nvm to manage Node.js versions. Make sure that nvm is installed on your system before proceeding.
+### 🛠️ Setup Instructions
 
-To Install nvm:
+1. **Clone the repository:**
 
-```bash
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-```
+   ```bash
+   git clone git@github.com:Sinash/cpu-load-monitor-backend.git
+   cd cpu-load-monitor-backend
+   ```
 
-If nvm is installed, install and use the Node.js version specified in the .nvmrc file:
+2. **Install dependencies:**
 
-```bash
-nvm install # Installs the Node.js version specified in .nvmrc
-nvm use # Switches to the required Node.js version
-```
+   ```bash
+   npm install
+   ```
 
-## To set up the CPU Load Monitor - Backend Service, follow these steps:
+3. **Set up environment variables:**
 
-### 1. Clone the Repository
+   Create a `.env` file in the root directory:
 
-First, clone the repository to your local machine:
+   ```bash
+   # .env
+   PORT=3001
+   USERNAME="cpu-user"
+   PASSWORD="cpu-password"
+   ```
 
-```bash
-git clone git@github.com:Sinash/cpu-load-monitor-backend.git
-cd cpu-load-monitor-backend
-```
+4. **Run the service:**
 
-### 2. Install Dependencies
+   For development with auto-restart:
 
-Install the required dependencies using npm:
+   ```bash
+   npm run dev
+   ```
 
-```bash
-npm install
-```
+   For production:
 
-Along with the dependencies, pre-commit hook based on husky will also be set.
+   ```bash
+   npm start
+   ```
 
-### 3. Set Up Environment Variables
+---
 
-This project uses dotenv to manage environment variables. Create a .env file in the root of your project directory. Below is an example of the `.env` file structure. You can also rename the `.env.sample` to `.env` thats in the repo
+## 💻 Development Guide
 
-```bash
-# .env
-PORT=3001
-USERNAME="cpu-user"
-PASSWORD="cpu-password"
-```
+### 1️⃣ **Linting**
 
-### 4. Running the Service
-
-For development, run the following command to start the server using Nodemon (it will automatically restart on file changes):
-
-```bash
-npm run dev
-```
-
-For production, use the following commands
-
-```bash
-npm start
-```
-
-The service will start running and be accessible based on the port number set in your .env file (e.g., http://localhost:3001).
-
-## Development
-
-This section covers important guidelines and commands to maintain code quality during development.
-
-### 1. Linting
-
-This project uses ESLint to ensure code quality. ESLint will check your code for potential errors and ensure it conforms to a consistent coding style while commiting the code.
-
-To run the linter manually:
+Run ESLint to check for code issues:
 
 ```bash
 npm run lint
 ```
 
-To fix linter errors:
+To auto-fix issues:
 
 ```bash
 npm run lint:fix
 ```
 
-### 2. Code Formating
+### 2️⃣ **Code Formatting**
 
-Prettier is used for consistent code formatting. To format your code manually, run:
+Run Prettier to format your code:
 
 ```bash
 npm run format
 ```
 
-Prettier will automatically format your code before committing to ensure all files are consistently styled.
+### 3️⃣ **Testing**
 
-### 3. Testing
-
-The project uses Jest for running unit tests. All features should be properly tested with unit tests, and tests must pass before committing changes.
-
-To run all tests:
+Run all tests using Jest:
 
 ```bash
 npm test
 ```
 
-This command will also generate a report showing how much of your code is covered by tests. You can view the report in the coverage folder.
+---
 
-### 4. Commit Message Standards
+## 📝 Commit Message Guidelines
 
-Follow these conventions when writing commit messages to ensure consistency and readability:
+- Use the present tense: "Add feature" not "Added feature."
+- Limit the first line to 72 characters.
+- Reference issues or PRs if applicable.
 
-Use the present tense: "Add feature" not "Added feature."
-Limit the first line to 72 characters or less.
-Reference issues and pull requests in the commit message, if applicable.
-Provide a detailed explanation in the body if needed, especially if the commit introduces significant changes or fixes a bug.
+Example commit message:
 
 ```bash
 git commit -m "feat: add API endpoint for fetching current CPU load"
 ```
 
-![Screenshot 2024-09-23 at 4 52 32 PM](https://github.com/user-attachments/assets/3e9a7403-e2b9-4d0a-8b35-2f8b4209156e)
+---
+
+## 📸 Screenshots
+
+![CPU Load Monitor](https://github.com/user-attachments/assets/3e9a7403-e2b9-4d0a-8b35-2f8b4209156e)
+
+---
