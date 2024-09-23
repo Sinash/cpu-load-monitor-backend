@@ -140,6 +140,8 @@ Install the required dependencies using npm:
 npm install
 ```
 
+Along with the dependencies, pre-commit hook based on husky will also be set.
+
 ### 3. Set Up Environment Variables
 
 This project uses dotenv to manage environment variables. Create a .env file in the root of your project directory. Below is an example of the `.env` file structure. You can also rename the `.env.sample` to `.env` thats in the repo
@@ -150,3 +152,51 @@ PORT=3001
 USERNAME="cpu-user"
 PASSWORD="cpu-password"
 ```
+
+### 4. Running the Service
+
+For development, run the following command to start the server using Nodemon (it will automatically restart on file changes):
+
+```bash
+npm run dev
+```
+
+For production, use the following commands
+
+```bash
+npm start
+```
+
+The service will start running and be accessible based on the port number set in your .env file (e.g., http://localhost:3001).
+
+<hr>
+
+## Development
+
+This section covers important guidelines and commands to maintain code quality during development.
+
+### 1. Linting
+
+This project uses ESLint to ensure code quality. ESLint will check your code for potential errors and ensure it conforms to a consistent coding style while commiting the code.
+
+To run the linter manually:
+
+```bash
+npm run lint
+```
+
+To fix linter errors:
+
+```bash
+npm run lint:fix
+```
+
+### 2. Code Formating
+
+Prettier is used for consistent code formatting. To format your code manually, run:
+
+```bash
+npm run format
+```
+
+Prettier will automatically format your code before committing to ensure all files are consistently styled.
