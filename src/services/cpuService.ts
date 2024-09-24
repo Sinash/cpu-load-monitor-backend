@@ -25,6 +25,14 @@ let recoveryStartTime: number | null = null; // Timestamp when recovery started
 let inHighLoad = false; // Flag to indicate if system is currently in high load
 let inRecovery = false; // Flag to indicate if system is currently in recovery
 
+const {
+  HIGH_LOAD_THRESHOLD,
+  RECOVERY_THRESHOLD,
+  HISTORY_TIME_IN_MIN,
+  MINS_IN_HIGH_THRESHOLD,
+  MINS_IN_RECOVERY_THRESHOLD,
+} = config;
+
 /**
  * Function to get the current CPU load data and handle alerting logic.
  *
@@ -45,10 +53,10 @@ const getCPULoadData = async () => {
   cleanOldHistory();
 
   // Check if the current load exceeds the high load threshold
-  const isLoadAboveThreshold = loadAverage > config.HIGH_LOAD_THRESHOLD;
+  const isLoadAboveThreshold = loadAverage > HIGH_LOAD_THRESHOLD;
 
   // Check if the current load falls below the recovery threshold
-  const isLoadBelowThreshold = loadAverage < config.RECOVERY_THRESHOLD;
+  const isLoadBelowThreshold = loadAverage < RECOVERY_THRESHOLD;
 
   let isHighLoad = false;
   let isRecovery = false;
@@ -98,7 +106,7 @@ const handlePotentialHighLoad = (timestamp: string) => {
   }
 
   // Check if high load has persisted for more than 2 minutes
-  if (currentTime - highLoadStartTime >= 2 * 60 * 1000) {
+  if (currentTime - highLoadStartTime >= MINS_IN_HIGH_THRESHOLD * 60 * 1000) {
     // Only trigger a high load alert if it has persisted for 2 minutes
     inHighLoad = true;
     highLoadAlerts.push({
@@ -131,17 +139,22 @@ const handleRecovery = (timestamp: string) => {
   }
 
   // Check if recovery has persisted for more than 2 minutes
-  if (currentTime - recoveryStartTime >= 2 * 60 * 1000) {
+  if (
+    currentTime - recoveryStartTime >=
+    MINS_IN_RECOVERY_THRESHOLD * 60 * 1000
+  ) {
     if (
       !recoveryAlerts.length ||
       recoveryAlerts[recoveryAlerts.length - 1].endTime
     ) {
       // Ensure the recovery starts right after the high load ends
-      const twoMinBeforeRecovery = new Date(currentTime - 2 * 60 * 1000);
+      const MinsBeforeRecovery = new Date(
+        currentTime - MINS_IN_RECOVERY_THRESHOLD * 60 * 1000
+      );
 
       // Set recovery start time to match the end of the last high load alert
       recoveryAlerts.push({
-        startTime: new Date(twoMinBeforeRecovery).toISOString(), // Fallback to timestamp if undefined
+        startTime: new Date(MinsBeforeRecovery).toISOString(), // Fallback to timestamp if undefined
         endTime: new Date(currentTime).toISOString(), // Set recovery end time 2 minutes after it starts
       });
 
@@ -151,7 +164,7 @@ const handleRecovery = (timestamp: string) => {
       ) {
         // Set highLoadAlerts endTime when the load goes below the threshold
         highLoadAlerts[highLoadAlerts.length - 1].endTime = new Date(
-          twoMinBeforeRecovery
+          MinsBeforeRecovery
         ).toISOString();
       }
 
@@ -192,7 +205,7 @@ const getAlerts = () => ({
  * removing entries that are older than the specified time.
  */
 const cleanOldHistory = () => {
-  const tenMinutesAgo = Date.now() - 10 * 60 * 1000;
+  const tenMinutesAgo = Date.now() - HISTORY_TIME_IN_MIN * 60 * 1000;
   while (
     loadHistory.length &&
     new Date(loadHistory[0].timestamp).getTime() < tenMinutesAgo

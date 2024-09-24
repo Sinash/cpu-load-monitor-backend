@@ -13,4 +13,13 @@ export const config = {
 
   // Set a threshold for CPU load recovery, when the system is considered to have recovered from high load
   RECOVERY_THRESHOLD: 1,
+
+  // Minutes to hold the hsitorical data
+  HISTORY_TIME_IN_MIN: 10,
+
+  // Minutes in HIGH_LOAD_THRESHOLD to trigger Hight Load Alert
+  MINS_IN_HIGH_THRESHOLD: 2,
+
+  // Minutes in RECOVERy_THRESHOLD to trigger Recovery Alert
+  MINS_IN_RECOVERY_THRESHOLD: 2,
 };

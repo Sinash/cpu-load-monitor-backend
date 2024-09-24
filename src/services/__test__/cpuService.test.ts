@@ -5,8 +5,11 @@ import { getNormalizedCpuLoad } from '../../utils/normalizeCpuLoad';
 jest.mock('../../utils/normalizeCpuLoad');
 jest.mock('../../config', () => ({
   config: {
-    HIGH_LOAD_THRESHOLD: 1.0,
-    RECOVERY_THRESHOLD: 0.8,
+    HIGH_LOAD_THRESHOLD: 1,
+    RECOVERY_THRESHOLD: 1,
+    HISTORY_TIME_IN_MIN: 10,
+    MINS_IN_HIGH_THRESHOLD: 2,
+    MINS_IN_RECOVERY_THRESHOLD: 2,
   },
 }));
 
