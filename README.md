@@ -218,6 +218,14 @@ git commit -m "feat: add API endpoint for fetching current CPU load"
 
 ## 🛠️ Troubleshooting
 
+Run the below command for generic issues
+
+```bahs
+npm run clean
+```
+
+---
+
 ### Issue: Port Already in Use
 
 **Solution**
@@ -233,6 +241,10 @@ lsof -i :3000
 ```bash
 kill -9 <PID>
 ```
+
+## POC Implementation Details
+
+https://github.com/Sinash/cpu-load-monitor-backend/wiki/CPU-Load-Monitoring-Web-Application-%E2%80%90-POC
 
 ## Production Consideration
 
