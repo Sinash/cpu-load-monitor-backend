@@ -242,6 +242,8 @@ lsof -i :3000
 kill -9 <PID>
 ```
 
+---
+
 ## POC Implementation Details
 
 https://github.com/Sinash/cpu-load-monitor-backend/wiki/CPU-Load-Monitoring-Web-Application-%E2%80%90-POC
