@@ -215,3 +215,21 @@ git commit -m "feat: add API endpoint for fetching current CPU load"
 ![CPU Load Monitor](https://github.com/user-attachments/assets/3e9a7403-e2b9-4d0a-8b35-2f8b4209156e)
 
 ---
+
+## 🛠️ Troubleshooting
+
+### Issue: Port Already in Use
+
+**Solution**
+
+- Identify the process using the port. On macOS/Linux, run:
+
+```bahs
+lsof -i :3000
+```
+
+- Kill the process using the following command:
+
+```bash
+kill -9 <PID>
+```
