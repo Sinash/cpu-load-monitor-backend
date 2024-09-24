@@ -91,6 +91,10 @@ This service is designed to work seamlessly with the **CPU Load Monitor - Fronte
       {
         "startTime": "2024-09-23T20:17:20.400Z",
         "endTime": "2024-09-23T20:19:20.400Z"
+      },
+      {
+        "startTime": "2024-09-23T21:30:20.400Z",
+        "endTime": "2024-09-23T21:32:20.400Z"
       }
     ],
     "highLoadCount": 3,
