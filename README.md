@@ -7,7 +7,7 @@
 
 ## 📝 Overview
 
-The **CPU Load Monitor Backend Service** is a RESTful API built with Node.js that monitors CPU load, tracks historical data, and manages alerts for high load conditions. It provides endpoints to access current CPU load, historical load data, and alert management, making it ideal for monitoring system performance. The cpu-summary api enpoint is the one used on the front-end, but you can look into the separate enpoints for debug purpose
+The **CPU Load Monitor Backend Service** is a RESTful API built with Node.js that monitors CPU load, tracks historical data, and manages alerts for high load conditions. It provides endpoints to access current CPU load, historical load data, and alert management, making it ideal for monitoring system performance. The `cpu-summary` api enpoint is the one used on the front-end, but you can look into the separate enpoints for debug purpose
 
 This service is designed to work seamlessly with the **CPU Load Monitor - Frontend Application**, which provides a user-friendly interface to visualize CPU load data and alerts in real-time. You can access the frontend repository and its README file [here](https://github.com/Sinash/cpu-load-monitor-frontend).
 
