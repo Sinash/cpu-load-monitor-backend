@@ -13,10 +13,10 @@ import { logger } from '../utils/logger';
  *
  * @returns {void} Sends a JSON response containing the CPU load history or an error message
  */
-export const getCpuHistory = (req: Request, res: Response) => {
+export const getCpuHistory = async (req: Request, res: Response) => {
   try {
     // Call the cpuService to retrieve CPU load history data
-    const data = cpuService.getLoadHistory();
+    const data = await cpuService.getLoadHistory();
 
     // Respond with the data in JSON format
     res.json(data);

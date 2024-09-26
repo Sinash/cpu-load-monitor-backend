@@ -27,13 +27,13 @@ describe('getCpuHistory Controller', () => {
     jest.clearAllMocks(); // Clear all previous mock calls
   });
 
-  it('should return CPU load history successfully', () => {
-    // Mock the cpuService.getLoadHistory() to return some data
+  it('should return CPU load history successfully', async () => {
+    // Mock the cpuService.getLoadHistory() to return a resolved promise
     const mockData = [{ loadAverage: 0.5, timestamp: '2023-01-01T00:00:00Z' }];
-    (cpuService.getLoadHistory as jest.Mock).mockReturnValue(mockData);
+    (cpuService.getLoadHistory as jest.Mock).mockResolvedValue(mockData);
 
     // Call the controller
-    getCpuHistory(req as Request, res as Response);
+    await getCpuHistory(req as Request, res as Response);
 
     // Expect the service to have been called
     expect(cpuService.getLoadHistory).toHaveBeenCalled();
@@ -42,7 +42,7 @@ describe('getCpuHistory Controller', () => {
     expect(res.json).toHaveBeenCalledWith(mockData);
   });
 
-  it('should log an error and return 500 when an error occurs', () => {
+  it('should log an error and return 500 when an error occurs', async () => {
     // Mock cpuService.getLoadHistory() to throw an error
     const mockError = new Error('Something went wrong');
     (cpuService.getLoadHistory as jest.Mock).mockImplementation(() => {
@@ -50,7 +50,7 @@ describe('getCpuHistory Controller', () => {
     });
 
     // Call the controller
-    getCpuHistory(req as Request, res as Response);
+    await getCpuHistory(req as Request, res as Response);
 
     // Expect the service to have been called and thrown an error
     expect(cpuService.getLoadHistory).toHaveBeenCalled();
@@ -67,7 +67,7 @@ describe('getCpuHistory Controller', () => {
     });
   });
 
-  it('should log a generic error and return 500 when an unknown error occurs', () => {
+  it('should log a generic error and return 500 when an unknown error occurs', async () => {
     // Mock cpuService.getLoadHistory() to throw a non-error object
     const mockError = 'Non-error object';
     (cpuService.getLoadHistory as jest.Mock).mockImplementation(() => {
@@ -75,7 +75,7 @@ describe('getCpuHistory Controller', () => {
     });
 
     // Call the controller
-    getCpuHistory(req as Request, res as Response);
+    await getCpuHistory(req as Request, res as Response);
 
     // Expect the service to have been called and thrown a non-error object
     expect(cpuService.getLoadHistory).toHaveBeenCalled();
