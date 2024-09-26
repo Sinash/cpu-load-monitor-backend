@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import { getCpuSummary } from '../../controllers/cpuSummaryController'; // Import the controller
 import cpuService from '../../services/cpuService'; // Import the CPU service
 import { logger } from '../../utils/logger'; // Import the logger
+import { getCpuSummary } from '../cpuSummaryController'; // Import the controller
 
 // Mock the cpuService and logger
 jest.mock('../../services/cpuService');
