@@ -7,7 +7,7 @@
 
 ## 📝 Overview
 
-The **CPU Load Monitor Backend Service** is a RESTful API built with Node.js that monitors CPU load, tracks historical data, and manages alerts for high load conditions. It provides endpoints to access current CPU load, historical load data, and alert management, making it ideal for monitoring system performance.
+The **CPU Load Monitor Backend Service** is a RESTful API built with Node.js that monitors CPU load, tracks historical data, and manages alerts for high load conditions. It provides endpoints to access current CPU load, historical load data, and alert management, making it ideal for monitoring system performance. The cpu-summary api enpoint is the one used on the front-end, but you can look into the separate enpoints for debug purpose
 
 This service is designed to work seamlessly with the **CPU Load Monitor - Frontend Application**, which provides a user-friendly interface to visualize CPU load data and alerts in real-time. You can access the frontend repository and its README file [here](https://github.com/Sinash/cpu-load-monitor-frontend).
 
@@ -99,6 +99,72 @@ This service is designed to work seamlessly with the **CPU Load Monitor - Fronte
     ],
     "highLoadCount": 3,
     "recoveryCount": 2
+  }
+  ```
+
+  ### 3️⃣ **Get CPU Summary**
+
+- **Endpoint**: `GET /api/v1/cpu-summary`
+- **Description**: Fetches all of the above info in a single API. Includes current load, load history, alerts and number of high load and recovery events.
+- **Response**:
+
+  ```json
+  {
+    "currentLoad": {
+      "loadAverage": 0.2916259765625,
+      "isHighLoad": false,
+      "isRecovery": false,
+      "timestamp": "2024-09-26T16:55:39.598Z"
+    },
+    "history": [
+      {
+        "loadAverage": 0.284423828125,
+        "timestamp": "2024-09-26T16:55:34.331Z"
+      },
+      {
+        "loadAverage": 0.2916259765625,
+        "timestamp": "2024-09-26T16:55:39.598Z"
+      },
+      {
+        "loadAverage": 0.2916259765625,
+        "timestamp": "2024-09-26T16:55:39.598Z"
+      },
+      {
+        "loadAverage": 0.2916259765625,
+        "timestamp": "2024-09-26T16:55:39.598Z"
+      },
+      {
+        "loadAverage": 0.2916259765625,
+        "timestamp": "2024-09-26T16:55:39.598Z"
+      }
+    ],
+    "alerts": {
+      "highLoadAlerts": [
+        {
+          "startTime": "2024-09-23T20:15:20.400Z",
+          "endTime": "2024-09-23T20:17:20.400Z"
+        },
+        {
+          "startTime": "2024-09-23T21:22:20.400Z",
+          "endTime": "2024-09-23T21:30:20.400Z"
+        },
+        {
+          "startTime": "2024-09-23T23:12:50.400Z"
+        }
+      ],
+      "recoveryAlerts": [
+        {
+          "startTime": "2024-09-23T20:17:20.400Z",
+          "endTime": "2024-09-23T20:19:20.400Z"
+        },
+        {
+          "startTime": "2024-09-23T21:30:20.400Z",
+          "endTime": "2024-09-23T21:32:20.400Z"
+        }
+      ],
+      "highLoadCount": 3,
+      "recoveryCount": 2
+    }
   }
   ```
 
