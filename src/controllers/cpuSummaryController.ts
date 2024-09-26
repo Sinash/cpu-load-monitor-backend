@@ -16,7 +16,7 @@ import { logger } from '../utils/logger';
  *
  * @returns {Promise<void>} Sends a JSON response containing both the current CPU load and history data or an error message
  */
-export const getCpuSummery = async (
+export const getCpuSummary = async (
   req: Request,
   res: Response
 ): Promise<void> => {

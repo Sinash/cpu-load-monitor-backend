@@ -7,7 +7,7 @@ import basicAuth from './middleware/authorization';
 import cpuLoadAlertsRoute from './routes/cpuLoadAlertsRoute';
 import cpuLoadHistoryRoute from './routes/cpuLoadHistoryRoute';
 import cpuLoadRoute from './routes/cpuLoadRoute';
-import cpuSummeryRoute from './routes/cpuSummeryRoutes';
+import cpuSummaryRoute from './routes/cpuSummaryRoutes';
 
 // Create an instance of the Express application
 const app = express();
@@ -22,7 +22,7 @@ app.use('/api', basicAuth);
 app.use('/api/v1', cpuLoadRoute); // Route for current CPU load
 app.use('/api/v1', cpuLoadHistoryRoute); // Route for CPU load history
 app.use('/api/v1', cpuLoadAlertsRoute); // Route for CPU load alerts
-app.use('/api/v1', cpuSummeryRoute); // Route for CPU Summery
+app.use('/api/v1', cpuSummaryRoute); // Route for CPU Summary
 
 // Catch-all route for undefined routes, returning a 404 error
 app.use('*', (req, res) => {
