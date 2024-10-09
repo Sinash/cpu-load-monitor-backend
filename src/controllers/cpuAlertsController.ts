@@ -13,10 +13,10 @@ import { logger } from '../utils/logger';
  *
  * @returns {void} Sends a JSON response containing the CPU alerts or an error message
  */
-export const getCpuAlerts = (req: Request, res: Response) => {
+export const getCpuAlerts = async (req: Request, res: Response) => {
   try {
     // Call the cpuService to retrieve CPU alerts
-    const data = cpuService.getAlerts();
+    const data = await cpuService.getAlerts();
 
     // Respond with the data in JSON format
     res.json(data);
